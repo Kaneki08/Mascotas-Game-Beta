@@ -5,7 +5,10 @@ export default class CustomButton extends Phaser.Scene {
     super("custom-button");
   }
 
-  preload() {}
+  preload() {
+
+    
+  }
   create() {
     this.add
       .image(400, 300, "../../assets/blue_botton01.png")
