@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 //import Scenes
 import TitleScreen from "./scenes/TitleScreen";
-import CustomButton from "./GameObjects/ball";
+import GameOver from "./scenes/gameover";
 import Game from "./scenes/Game";
 
 const config = {
@@ -14,7 +14,7 @@ const config = {
       gravity: { y: 0 },
     },
   },
-  scene: [TitleScreen, Game],
+  scene: [TitleScreen, Game, GameOver],
 };
 
 const game = new Phaser.Game(config);

@@ -28,4 +28,14 @@ export default class Dog extends Phaser.GameObjects.Image {
       this.image.y += 5;
     }
   }
+
+  //adding player collision
+  playerCollideWith(object) {
+    this.scene.physics.add.collider(this.image, object);
+    return this; 
+  }
+
+  lose(){
+    
+  }
 }

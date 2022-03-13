@@ -1,24 +1,26 @@
 import Phaser from "phaser";
 
 export default class Ball extends Phaser.GameObjects.Image {
-    constructor(scene, x, y, texture) {
-      super(scene, x, y, texture);
-      this.image = scene.add.existing(this);
-    }
-  
-
-
-preload() { }
-
-  create() {
-    this.image.body.velocity.setTo(200, 200);
-
-    //  This makes the game world bounce-able
-    this.image.ball.body.collideWorldBounds = true;
+  constructor(scene, x, y, texture) {
+    super(scene, x, y, texture);
+    this.image = scene.add.existing(this);
+    //adding
   }
 
-update() {
-    
-    
+  preload() {}
+
+  create() {}
+
+  update() {}
+
+  enemyCollideWith(object) {
+    this.scene.physics.add.collider(this.image, object);
+    return this; 
+  }
+
+  lose(object){
+      if(this.enemyCollideWith(object)){
+          this.scene.start("GameOver");
+      }
   }
 }

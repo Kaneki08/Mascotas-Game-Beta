@@ -3,7 +3,7 @@ import bg from "../../assets/lol.png";
 import dogimg from "../../assets/dog.png";
 import Dog from "../GameObjects/dog";
 import Ballimg from "../../assets/Ball.png";
-// import Ball from "../GameObjects/ball";
+import Ball from "../GameObjects/ball";
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -24,12 +24,13 @@ export default class Game extends Phaser.Scene {
     // background.setDisplaySize(800, 500);
 
     //add ball
-    const ball= this.add.image(0, 100, "ball");
-    this.physics.add.existing(ball);
-    ball.body.setBounce(1, 1);
-    ball.body.setCollideWorldBounds(true, 1, 1);
-    ball.body.setVelocity(300, 300);
-    
+    this.badball = new Ball(this, 10, 100, "ball");
+    this.physics.add.existing(this.badball);
+    this.badball.body.setBounce(1, 1);
+    this.badball.body.setCollideWorldBounds(true, 1, 1);
+    this.badball.body.setVelocity(300, 300);
+    this.badball.enemyCollideWith(this.player);
+
     // Add character Moose
     this.player = new Dog(this, 0, 100, "dog");
     this.player.setScale(0.3);
@@ -41,7 +42,8 @@ export default class Game extends Phaser.Scene {
       background.displayHeight
     );
     this.player.body.setCollideWorldBounds(true);
-// comment 
+    this.player.playerCollideWith(this.badball);
+    // comment
     this.cameras.main
       .setBounds(0, 0, background.displayWidth, background.displayHeight)
       .startFollow(this.player);
