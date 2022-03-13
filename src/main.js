@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 //import Scenes
 import TitleScreen from "./scenes/TitleScreen";
-import CustomButton from "./scenes/CustomButton";
+import CustomButton from "./GameObjects/ball";
 import Game from "./scenes/Game";
 
 const config = {
