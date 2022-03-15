@@ -5,10 +5,12 @@ import Dog from "../GameObjects/dog";
 import Ballimg from "../../assets/Ball.png";
 import Ball from "../GameObjects/ball";
 
+
 export default class Game extends Phaser.Scene {
   constructor() {
     super("playGame");
   }
+  
 
   preload() {
     // Load background
@@ -18,22 +20,28 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
+
+  const box = this.add.rectangle(600, 200, 200, 148);
+  box.setStrokeStyle(2, 0x1a65ac);
+  box.setPosition(400, 550);
+
     // Set Background
     const background = this.add.image(0, 0, "background");
     background.setOrigin(0, 0);
-    // background.setDisplaySize(800, 500);
+    background.setDisplaySize(800, 600);
 
     //add ball
     this.badball = new Ball(this, 10, 100, "ball");
     this.physics.add.existing(this.badball);
     this.badball.body.setBounce(1, 1);
     this.badball.body.setCollideWorldBounds(true, 1, 1);
-    this.badball.body.setVelocity(300, 300);
+    this.badball.body.setVelocity(0, 0);
     this.badball.enemyCollideWith(this.player);
 
     // Add character Moose
     this.player = new Dog(this, 0, 100, "dog");
     this.player.setScale(0.3);
+    this.player.setPosition(400, 550);
     this.physics.add.existing(this.player);
     this.physics.world.setBounds(
       0,
@@ -50,6 +58,8 @@ export default class Game extends Phaser.Scene {
 
     // Get Inputs
     this.input = this.input.keyboard.createCursorKeys();
+
+   
   }
 
   update() {
