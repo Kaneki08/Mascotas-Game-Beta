@@ -1,68 +1,52 @@
 import Phaser from "phaser";
-import bg from "../../assets/lol.png";
-import dogimg from "../../assets/dog.png";
-import Dog from "../GameObjects/dog";
-import Ballimg from "../../assets/Ball.png";
+// Images
+import bg from "../assets/img/lol.png";
+import dogImg from "../assets/img/dog.png";
+// Classes
+import Dog from "../GameObjects/Dog";
 import Ball from "../GameObjects/ball";
-
 
 export default class Game extends Phaser.Scene {
   constructor() {
     super("playGame");
   }
-  
 
   preload() {
     // Load background
     this.load.image("background", `${bg}`);
-    this.load.image("dog", `${dogimg}`);
-    this.load.image("ball", `${Ballimg}`);
+    // Load Player - image file and Atlas
+    this.load.image("player", `${dogImg}`);
   }
 
   create() {
-
-  const box = this.add.rectangle(600, 200, 200, 148);
-  box.setStrokeStyle(2, 0x1a65ac);
-  box.setPosition(400, 550);
-
     // Set Background
     const background = this.add.image(0, 0, "background");
     background.setOrigin(0, 0);
     background.setDisplaySize(800, 600);
 
-    //add ball
-    this.badball = new Ball(this, 10, 100, "ball");
-    this.physics.add.existing(this.badball);
-    this.badball.body.setBounce(1, 1);
-    this.badball.body.setCollideWorldBounds(true, 1, 1);
-    this.badball.body.setVelocity(0, 0);
-    this.badball.enemyCollideWith(this.player);
+    // Add player
+    this.dog = new Dog(this, 0, 100, "player");
+    this.physics.add.sprite(this.dog);
+    this.dog.setPosition(400, 550).setScale(0.3).setBounce(1, 1);
 
-    // Add character Moose
-    this.player = new Dog(this, 0, 100, "dog");
-    this.player.setScale(0.3);
-    this.player.setPosition(400, 550);
-    this.physics.add.existing(this.player);
-    this.physics.world.setBounds(
-      0,
-      0,
-      background.displayWidth,
-      background.displayHeight
-    );
-    this.player.body.setCollideWorldBounds(true);
-    this.player.playerCollideWith(this.badball);
-    // comment
-    this.cameras.main
-      .setBounds(0, 0, background.displayWidth, background.displayHeight)
-      .startFollow(this.player);
+    // Invisible walls
+    this.boundOne = this.add.rectangle(230, 550, 50, 100, 0xffffff, 1);
+    this.physics.add.existing(this.boundOne);
+    this.boundOne.body.setBounce(1, 1);
+
+    // set boundary
+    this.physics.add.collider(this.dog, this.boundOne, () => {
+      if (true) {
+        this.dog.body.x = 400;
+        console.log("Collide ");
+      }
+    });
 
     // Get Inputs
     this.input = this.input.keyboard.createCursorKeys();
-
-   
   }
 
   update() {
-    this.player.update(this.input);
+    this.dog.update(this.input);
   }
 }
