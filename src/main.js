@@ -12,10 +12,10 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: true,
+      debug: false,
     },
   },
-  scene: [Game, GameOver],
+  scene: [TitleScreen, Game, GameOver],
 };
 
 const game = new Phaser.Game(config);
