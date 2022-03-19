@@ -22,9 +22,11 @@ export default class GameOver extends Phaser.Scene {
 
     const button = this.add.image(400, 400, "back");
     button.setScale(0.4);
-      button.setInteractive()
+    button
+      .setInteractive()
       .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
         this.scene.start("startGame");
+        window.location.reload();
       });
   }
 }

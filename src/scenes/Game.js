@@ -27,12 +27,20 @@ export default class Game extends Phaser.Scene {
     background.setOrigin(0, 0);
     background.setDisplaySize(800, 600);
 
+    //score
+    const gameState = { score: 0 };
+    gameState.scoreText = this.add.text(16, 16, "Score: 0", {
+      fontSize: "15px",
+      fill: "#FFBF02",
+    });
+
     //set ball
     this.badball = new Ball(this, 10, 100, "ball");
     this.physics.add.existing(this.badball);
     this.badball.body.setBounce(1, 1);
     this.badball.body.setCollideWorldBounds(true, 1, 1);
-    this.badball.body.setVelocity(100, 100);
+    this.badball.body.setVelocity(300, 300);
+
     // this.physics.add.collider(this.dog, this.badball, () => {
     //   if (true) {
 
@@ -62,6 +70,9 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(this.dog, this.badball, () => {
       if (true) {
         this.scene.start("GameOver");
+
+        // gameState.score += 10;
+        // gameState.scoreText.setText(`Score: ${gameState.score}`);
       }
     });
 
