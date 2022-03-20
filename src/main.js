@@ -4,6 +4,8 @@ import TitleScreen from "./scenes/TitleScreen";
 import GameOver from "./scenes/gameover";
 import Game from "./scenes/Game";
 
+
+
 const config = {
   type: Phaser.AUTO,
   width: 800,

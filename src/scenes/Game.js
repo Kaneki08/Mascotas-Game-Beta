@@ -16,6 +16,14 @@ export default class Game extends Phaser.Scene {
   scoreText = null;
   // boundary container
   boundary = null;
+  // game current level
+  level = 1;
+  // game width
+  width = 800;
+  // game height
+  height = 600;
+  // list of x values for each lane
+  lanes = [275, 375, 475];
 
   constructor() {
     super("playGame");
@@ -42,12 +50,21 @@ export default class Game extends Phaser.Scene {
       fill: "#FFBF02",
     });
 
-    //set ball
-    this.badball = new Ball(this, 10, 100, "ball");
+    //set ball 1 to spawn in lane
+    this.badball = new Ball(this, this.lanes[0], -300, "ball");
     this.physics.add.existing(this.badball);
     this.badball.body.setBounce(1, 1);
-    this.badball.body.setCollideWorldBounds(true, 1, 1);
-    this.badball.body.setVelocity(0, 0); // change back to 300,300
+    this.badball.body.setVelocityY(300); // change back to 300,300
+
+    // create ball number 2
+    this.badball2 = new Ball(this, -1000, -1000, "ball");
+    this.physics.add.existing(this.badball2);
+    this.badball2.body.setBounce(1, 1);
+
+    // create ball number 3
+    this.badball3 = new Ball(this, -1000, -1000, "ball");
+    this.physics.add.existing(this.badball3);
+    this.badball3.body.setBounce(1, 1);
 
     // this.physics.add.collider(this.dog, this.badball, () => {
     //   if (true) {
@@ -61,7 +78,9 @@ export default class Game extends Phaser.Scene {
     this.physics.add.sprite(this.dog);
     this.dog.setPosition(400, 550).setScale(0.3).setBounce(1, 1);
     // setting a boundary on the dog - the dimensions are specified by the phaser rectable
-    this.dog.body.setBoundsRectangle(new Phaser.Geom.Rectangle(200, 150, 400, 300));
+    this.dog.body.setBoundsRectangle(
+      new Phaser.Geom.Rectangle(260, 300, 300, 300)
+    );
 
     // // Invisible walls
     // this.boundOne = this.add.rectangle(230, 550, 50, 100, 0xffffff, 1);
@@ -91,10 +110,10 @@ export default class Game extends Phaser.Scene {
 
     /**
      * create timer object
-     * 
+     *
      * We want to run the timerEvent function
      * everytime a second has elapsed
-     * 
+     *
      * The timer function willl update the user score
      */
     this.triggerTimer = this.time.addEvent({
@@ -104,14 +123,50 @@ export default class Game extends Phaser.Scene {
       loop: true,
     });
 
-
-    this.add.graphics()
-    .lineStyle(5, 0x00ffff, 0.5)
-    .strokeRectShape(this.dog.body.customBoundsRectangle);
+    this.add
+      .graphics()
+      .lineStyle(5, 0x00ffff, 0.5)
+      .strokeRectShape(this.dog.body.customBoundsRectangle);
   }
 
   update() {
     this.dog.update(this.input);
+
+    // handle ball 1 loop
+    if (this.badball.body.y > this.height + this.badball.body.height) {
+      this.badball.setPosition(this.lanes[this.getLane()], -300);
+    }
+
+    // if level 2, handle ball 2 loop
+    if (
+      this.level === 2 &&
+      this.badball2.body.y > this.height + this.badball2.body.height
+    ) {
+      this.badball2.setPosition(this.lanes[this.getLane()], -300);
+    }
+
+    // check if score is above 20
+    if (this.level === 1 && this.score > 20) {
+      // move ball into the game
+      this.badball2.setPosition(this.lanes[this.getLane()], -300); // spawn for ball 2
+      // add velocity to the ball number 2
+      this.badball2.body.setVelocityY(300); // change back to 300,300
+      // go to level 2
+      this.level = 2;
+    }
+  }
+
+  /**
+   * Returns a random integer between min (inclusive) and max (inclusive).
+   * The value is no lower than min (or the next integer greater than min
+   * if min isn't an integer) and no greater than max (or the next integer
+   * lower than max if max isn't an integer).
+   * Using Math.round() will give you a non-uniform distribution!
+   */
+  getRandomInt(min, max) {
+    min = Math.ceil(min); // 1.5 -> 2
+    max = Math.floor(max); // 1.5 -> 1
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   /***
@@ -124,5 +179,22 @@ export default class Game extends Phaser.Scene {
     this.score = this.score + 5;
     // update the score text
     this.scoreText.setText(`Score: ${this.score}`);
+  }
+
+  /**
+   * This function generates a number between the min and
+   * max (incluive)
+   * @param {number} min
+   * @param {number} max
+   * @returns
+   */
+  getLane() {
+    const min = 1;
+    const max = 3;
+    const lane = Math.round(Math.random() * (max - min) + min);
+
+    console.log(lane);
+
+    return lane -1;
   }
 }
