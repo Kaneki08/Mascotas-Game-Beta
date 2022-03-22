@@ -4,12 +4,15 @@ import TitleScreen from "./scenes/TitleScreen";
 import GameOver from "./scenes/gameover";
 import Game from "./scenes/Game";
 
-
-
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    parent: "mascotas-game",
+    width: 800,
+    height: 600,
+  },
   physics: {
     default: "arcade",
     arcade: {
