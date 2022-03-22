@@ -1,11 +1,13 @@
 import Phaser from "phaser";
 // Images
-import bg from "../assets/img/lol.png";
+import bg from "../assets/img/road-background.png";
 import dogImg from "../assets/img/dog.png";
+import policeimg from "../assets/img/police_edited.png";
 // Classes
 import Dog from "../GameObjects/Dog";
 import Ball from "../GameObjects/ball";
 import Ballimg from "../assets/img/Ball.png";
+import police from "../GameObjects/police";
 
 export default class Game extends Phaser.Scene {
   // set our timer to null
@@ -23,7 +25,7 @@ export default class Game extends Phaser.Scene {
   // game height
   height = 600;
   // list of x values for each lane
-  lanes = [275, 375, 475];
+  lanes = [200, 400, 600];
 
   constructor() {
     super("playGame");
@@ -36,6 +38,8 @@ export default class Game extends Phaser.Scene {
     this.load.image("player", `${dogImg}`);
     // load ball
     this.load.image("ball", `${Ballimg}`);
+    // load police
+    this.load.image("pol", `${policeimg}`);
   }
 
   create() {
@@ -50,9 +54,17 @@ export default class Game extends Phaser.Scene {
       fill: "#FFBF02",
     });
 
+    //police
+    this.badcar = new police(this, -1000, -1000, "pol");
+    this.badcar.setScale(0.5);
+    this.physics.add.existing(this.badcar);
+    this.badcar.body.setBounce(1, 1);
+    this.badcar.body.setVelocityY(400);
+
     //set ball 1 to spawn in lane
     this.badball = new Ball(this, this.lanes[0], -300, "ball");
     this.physics.add.existing(this.badball);
+    this.badball.setScale(1.4);
     this.badball.body.setBounce(1, 1);
     this.badball.body.setVelocityY(300); // change back to 300,300
 
@@ -79,8 +91,11 @@ export default class Game extends Phaser.Scene {
     this.dog.setPosition(400, 550).setScale(0.3).setBounce(1, 1);
     // setting a boundary on the dog - the dimensions are specified by the phaser rectable
     this.dog.body.setBoundsRectangle(
-      new Phaser.Geom.Rectangle(260, 300, 300, 300)
-    );
+      new Phaser.Geom.Rectangle(120, 300, 560, 300),
+      
+    )
+    
+    
 
     // // Invisible walls
     // this.boundOne = this.add.rectangle(230, 550, 50, 100, 0xffffff, 1);
@@ -104,6 +119,19 @@ export default class Game extends Phaser.Scene {
         // gameState.scoreText.setText(`Score: ${gameState.score}`);
       }
     });
+    this.physics.add.collider(this.dog, this.badball2, () => {
+      if (true) {
+        this.scene.start("GameOver");
+
+        // gameState.score += 10;
+        // gameState.scoreText.setText(`Score: ${gameState.score}`);
+      }
+    });
+    this.physics.add.collider(this.dog, this.badcar, () => {
+      if (true) {
+        this.scene.start("GameOver");
+      }
+    });
 
     // Get Inputs
     this.input = this.input.keyboard.createCursorKeys();
@@ -122,11 +150,6 @@ export default class Game extends Phaser.Scene {
       delay: 1000, // 1000 = 1 second
       loop: true,
     });
-
-    this.add
-      .graphics()
-      .lineStyle(5, 0x00ffff, 0.5)
-      .strokeRectShape(this.dog.body.customBoundsRectangle);
   }
 
   update() {
@@ -144,6 +167,13 @@ export default class Game extends Phaser.Scene {
     ) {
       this.badball2.setPosition(this.lanes[this.getLane()], -300);
     }
+    if (
+      this.level === 3 &&
+      this.badcar.body.y > this.height + this.badcar.body.height
+    ) {
+      this.badcar.setPosition(this.lanes[this.getLane()], -300);
+      this.badball2.setPosition(this.lanes[this.getLane()], -300);
+    }
 
     // check if score is above 20
     if (this.level === 1 && this.score > 20) {
@@ -154,6 +184,17 @@ export default class Game extends Phaser.Scene {
       // go to level 2
       this.level = 2;
     }
+
+    if (this.level === 2 && this.score > 50) {
+      // move ball into the game
+      this.badcar.setPosition(this.lanes[this.getLane()], -400); // spawn for ball 2
+      // add velocity to the ball number 2
+      this.badcar.body.setVelocityY(400); // change back to 300,300
+      
+      // go to level 2
+      this.level = 3;
+    }
+    
   }
 
   /**
@@ -195,6 +236,6 @@ export default class Game extends Phaser.Scene {
 
     console.log(lane);
 
-    return lane -1;
+    return lane - 1;
   }
 }

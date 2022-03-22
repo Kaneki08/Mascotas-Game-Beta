@@ -15,12 +15,12 @@ export default class Dog extends Phaser.Physics.Arcade.Sprite {
   update(input) {
     // move right
     if (input.right.isDown) {
-      this.x += 5;
+      this.x += 10;
       
     }
     // move left
     if (input.left.isDown) {
-      this.x -= 5;
+      this.x -= 10;
     }
   }
 
