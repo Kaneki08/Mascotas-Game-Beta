@@ -59,12 +59,13 @@ export default class Game extends Phaser.Scene {
     this.badcar.setScale(0.5);
     this.physics.add.existing(this.badcar);
     this.badcar.body.setBounce(1, 1);
-    this.badcar.body.setVelocityY(400);
+    this.badcar.body.setVelocityY(500);
 
     //set ball 1 to spawn in lane
     this.badball = new Ball(this, this.lanes[0], -300, "ball");
     this.physics.add.existing(this.badball);
     this.badball.setScale(1.4);
+    this.badball.setSize(8, 12, true);
     this.badball.body.setBounce(1, 1);
     this.badball.body.setVelocityY(300); // change back to 300,300
 
@@ -180,7 +181,7 @@ export default class Game extends Phaser.Scene {
       // move ball into the game
       this.badball2.setPosition(this.lanes[this.getLane()], -300); // spawn for ball 2
       // add velocity to the ball number 2
-      this.badball2.body.setVelocityY(300); // change back to 300,300
+      this.badball2.body.setVelocityY(450); // change back to 300,300
       // go to level 2
       this.level = 2;
     }
@@ -189,7 +190,7 @@ export default class Game extends Phaser.Scene {
       // move ball into the game
       this.badcar.setPosition(this.lanes[this.getLane()], -400); // spawn for ball 2
       // add velocity to the ball number 2
-      this.badcar.body.setVelocityY(400); // change back to 300,300
+      this.badcar.body.setVelocityY(550); // change back to 300,300
       
       // go to level 2
       this.level = 3;
