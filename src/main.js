@@ -17,7 +17,7 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: true, // debug only id dev
+      debug: false, // debug only id dev
     },
   },
   scene: [TitleScreen, Game, GameOver],

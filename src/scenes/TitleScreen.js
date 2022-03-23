@@ -26,8 +26,9 @@ export default class TitleScreen extends Phaser.Scene {
     this.video.play();
 
 
-    const title = this.add.text(400, 250, "Mascotas");
+    const title = this.add.text(400, 250, "Mascotas", {color: '	#CD5C5C'});
     title.setOrigin(0.5, 9);
+    
 
     const button = this.add.image(400, 400, "start");
     button.setScale(0.4);

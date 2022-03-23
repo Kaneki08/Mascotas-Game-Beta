@@ -65,13 +65,14 @@ export default class Game extends Phaser.Scene {
     this.badball = new Ball(this, this.lanes[0], -300, "ball");
     this.physics.add.existing(this.badball);
     this.badball.setScale(1.4);
-    this.badball.setSize(8, 12, true);
+    this.badball.body.setCircle(44, 15, 7);
     this.badball.body.setBounce(1, 1);
     this.badball.body.setVelocityY(300); // change back to 300,300
 
     // create ball number 2
     this.badball2 = new Ball(this, -1000, -1000, "ball");
     this.physics.add.existing(this.badball2);
+    this.badball2.body.setCircle(40, 18, 12);
     this.badball2.body.setBounce(1, 1);
 
     // create ball number 3
@@ -89,7 +90,7 @@ export default class Game extends Phaser.Scene {
     // Add player
     this.dog = new Dog(this, 0, 100, "player");
     this.physics.add.sprite(this.dog);
-    this.dog.setPosition(400, 550).setScale(0.3).setBounce(1, 1);
+    this.dog.setPosition(400, 550).setScale(0.6).setBounce(1, 1);
     // setting a boundary on the dog - the dimensions are specified by the phaser rectable
     this.dog.body.setBoundsRectangle(
       new Phaser.Geom.Rectangle(120, 300, 560, 300),
