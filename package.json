@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node scripts/start.js"
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js"
   },
   "author": "Derick",
   "license": "ISC",
